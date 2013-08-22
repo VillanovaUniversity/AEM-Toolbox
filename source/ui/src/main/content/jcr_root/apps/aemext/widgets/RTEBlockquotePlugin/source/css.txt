@@ -1,3 +1,0 @@
-#base=source/css
-
-RTEBlockquote.css

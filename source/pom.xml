@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.aemext</groupId>
-    <artifactId>aem-ext</artifactId>
+    <groupId>com.aem.toolbox</groupId>
+    <artifactId>aem-toolbox-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>AEM-Ext Parent</name>
-	<description>Parent pom for AEM-Ext module</description>
+	<name>AEM Toolbox Parent</name>
+	<description>Parent pom for AEM Toolbox module</description>
 	<modules>
 		<module>core</module>
 		<module>ui</module>

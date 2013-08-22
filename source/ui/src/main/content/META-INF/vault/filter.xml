@@ -4,5 +4,5 @@
     !!! Make modification carefully !!!
 -->
 <workspaceFilter vesion="1.0">
-	<filter root="/apps/aemext" />
+	<filter root="/apps/aemtoolbox" />
 </workspaceFilter>

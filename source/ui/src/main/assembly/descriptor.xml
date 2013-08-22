@@ -33,10 +33,10 @@
 
 			<!-- Now, select which projects to include in this module-set. -->
 			<includes>
-				<include>com.aemext:aem-ext-core</include>
+				<include>com.aem.toolbox:aem-toolbox-core</include>
 			</includes>
 			<binaries>
-				<outputDirectory>/jcr_root/apps/aemext/install/</outputDirectory>
+				<outputDirectory>/jcr_root/apps/aemtoolbox/install/</outputDirectory>
 				<unpack>false</unpack>
 			</binaries>
 		</moduleSet>

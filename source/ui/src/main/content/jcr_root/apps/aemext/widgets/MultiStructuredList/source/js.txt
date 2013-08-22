@@ -1,6 +1,0 @@
-#base=source/js
-
-MultiStructuredList.js
-Slide.js
-SlideSettingsPanel.js
-SlidesPanel.js
