@@ -109,7 +109,7 @@
 				<configuration>
 					<instructions>
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Category>aem-ext</Bundle-Category>
+						<Bundle-Category>aem-toolbox</Bundle-Category>
 						<Export-Package>
 							com.aem.*; version="${project.version}",
 						</Export-Package>
