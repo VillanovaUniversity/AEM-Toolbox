@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>com.aemext</groupId>
+		<artifactId>aem-ext</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.aemext</groupId>
+	<artifactId>aem-ext-ui</artifactId>
+	<name>AEM-Ext UI</name>
+	<description>AEM Extensions UI module.</description>
+	<packaging>pom</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.aemext</groupId>
+			<artifactId>aem-ext-core</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Adobe CQ -->
+		<dependency>
+			<groupId>com.day.cq.wcm</groupId>
+			<artifactId>cq-wcm-commons</artifactId>
+		</dependency>
+		<!-- Adobe -->
+		<!-- Sling -->
+		<!-- Felix/OSGI -->
+		<!-- JCR -->
+		<!-- Web -->
+
+		<!-- Logging -->
+		<!-- Solr -->
+		<!-- Others -->
+		<!-- Test/Mock -->
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>aem-package</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/descriptor.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>com.cognifide.maven.plugins</groupId>
+				<artifactId>maven-crx-plugin</artifactId>
+				<configuration>
+					<url>http://${aem.application.server}:${aem.application.port}</url>
+					<user>${aem.admin.username}</user>
+					<password>${aem.admin.password}</password>
+					<force>true</force>
+					<packageFileName>${project.build.directory}/${project.build.finalName}-package.zip</packageFileName>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>install</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
