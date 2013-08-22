@@ -1,0 +1,5 @@
+#base=source/js
+
+RTEBlockquotePlugin.js
+RTEBlockquoteCommand.js
+RTELinedBlockquoteCommand.js

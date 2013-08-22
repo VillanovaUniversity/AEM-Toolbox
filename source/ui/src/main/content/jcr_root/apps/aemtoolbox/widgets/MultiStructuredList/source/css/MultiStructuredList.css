@@ -1,0 +1,11 @@
+#CQ .hide-carousel-image > :first-child {
+	display: none;
+}
+
+#CQ .hide-carousel-image > div {
+	position: static;
+}
+
+#CQ .hide-carousel-image {
+	background-color: #FFFFFF;
+}
