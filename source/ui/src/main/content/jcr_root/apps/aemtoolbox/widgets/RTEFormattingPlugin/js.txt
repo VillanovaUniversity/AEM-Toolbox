@@ -1,0 +1,5 @@
+#base=source/js
+
+RTEFormattingUI.js
+RTEFormattingPlugin.js
+RTEFormattingCommand.js
