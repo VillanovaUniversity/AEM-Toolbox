@@ -1,0 +1,34 @@
+#vidResults .vid-wrapper {
+    padding: 0 0 25px;
+}
+
+#vidResults .vid-title {
+    clear: right;
+    color: black;
+    font-weight: bold;
+    font-size: 13px;
+    padding-bottom: 5px;
+}
+#vidResults .vid-thumb-text-wrapper {
+    width: 100%;
+}
+#vidResults .vid-thumb {
+    display: inline;
+    width: 30%;
+}
+#vidResults .vid-thumb img {
+    height: 70px;
+    width: 100px;
+}
+#vidResults .vid-cat-desc-wrapper {
+    font-size: 10px;
+    width: 75%;
+}
+#vidResults .vid-cat {
+    color: black;
+    text-decoration: underline;
+}
+
+#vidResults .vid-wrapper.x-view-selected {
+    background-color: #B7CEE8;
+}
