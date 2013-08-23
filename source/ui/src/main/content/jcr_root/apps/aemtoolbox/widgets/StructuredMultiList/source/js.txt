@@ -1,6 +1,6 @@
 #base=source/js
 
-MultiStructuredList.js
+StructuredMultiList.js
 Slide.js
 SlideSettingsPanel.js
 SlidesPanel.js

@@ -1,7 +1,7 @@
 //create widget namespace
-CQ.Ext.ns('AEM.Toolbox.Widgets.MultiStructuredList');
+CQ.Ext.ns('AEM.Toolbox.Widgets.StructuredMultiList');
 
-AEM.Toolbox.Widgets.MultiStructuredList.Slide = CQ.Ext.extend(CQ.Ext.emptyFn, {
+AEM.Toolbox.Widgets.StructuredMultiList.Slide = CQ.Ext.extend(CQ.Ext.emptyFn, {
 
 	/**
 	 * @cfg {Object} referencedFileInfo

@@ -1,7 +1,7 @@
 //create widget namespace
-CQ.Ext.ns('AEM.Toolbox.Widgets.MultiStructuredList');
+CQ.Ext.ns('AEM.Toolbox.Widgets.StructuredMultiList');
 
-AEM.Toolbox.Widgets.MultiStructuredList.SlidesPanel = CQ.Ext.extend(CQ.form.Slideshow.SlidesPanel, {
+AEM.Toolbox.Widgets.StructuredMultiList.SlidesPanel = CQ.Ext.extend(CQ.form.Slideshow.SlidesPanel, {
 
 	/**
 	 * Constructor to create a new slides panel. This is the panel with the combobox.
@@ -138,7 +138,7 @@ AEM.Toolbox.Widgets.MultiStructuredList.SlidesPanel = CQ.Ext.extend(CQ.form.Slid
 
 		CQ.Util.applyDefaults(config, defaults);
 		//call superclass constructor.
-		AEM.Toolbox.Widgets.MultiStructuredList.SlidesPanel.superclass.constructor.call(this, config);
+		AEM.Toolbox.Widgets.StructuredMultiList.SlidesPanel.superclass.constructor.call(this, config);
 	},
 
 	adjustSelectorWidth: function(width) {

@@ -1,7 +1,7 @@
 //create widget namespace
 CQ.Ext.ns('AEM.Toolbox.Widgets');
 
-AEM.Toolbox.Widgets.MultiStructuredList = CQ.Ext.extend(CQ.form.Slideshow, {
+AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	/**
 	 * Will track if the user changed any crop settings.
 	 * This is required so we know if our crop tool was initialized with proper
@@ -30,7 +30,7 @@ AEM.Toolbox.Widgets.MultiStructuredList = CQ.Ext.extend(CQ.form.Slideshow, {
 		var maxSlides = config.maxSlides || 8;
 		//define our default configuration.
 		var defaults = {
-			"headPanel": new AEM.Toolbox.Widgets.MultiStructuredList.SlidesPanel({
+			"headPanel": new AEM.Toolbox.Widgets.StructuredMultiList.SlidesPanel({
 				"onSlideChanged": this.onSlideChanged.createDelegate(this),
 				"onAddButton": this.onAddButton.createDelegate(this),
 				"onRemoveButton": this.onRemoveButton.createDelegate(this),
@@ -38,7 +38,7 @@ AEM.Toolbox.Widgets.MultiStructuredList = CQ.Ext.extend(CQ.form.Slideshow, {
 				"onDownButton": this.onDownButton.createDelegate(this),
 				maxSlides : maxSlides
 			}),
-			"footPanel": new AEM.Toolbox.Widgets.MultiStructuredList.SlideSettingsPanel({"items": settings}),
+			"footPanel": new AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel({"items": settings}),
 			"fileReferencePrefix": "./slide$",
 			"cropParameter": ":fakeImageCrop",//start this property with : so it will not be stored.
 			"rotateParameter": ":fakeImageRotate",//start this property with : so it will not be stored.
@@ -54,7 +54,7 @@ AEM.Toolbox.Widgets.MultiStructuredList = CQ.Ext.extend(CQ.form.Slideshow, {
 		CQ.Util.applyDefaults(config, defaults);
 
 		//call our superclass constructor
-		AEM.Toolbox.Widgets.MultiStructuredList.superclass.constructor.call(this, config);
+		AEM.Toolbox.Widgets.StructuredMultiList.superclass.constructor.call(this, config);
 
 		//be sure our slides represent an empty array.
 		this.slides = [ ];
@@ -65,7 +65,7 @@ AEM.Toolbox.Widgets.MultiStructuredList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 */
 	initComponent: function() {
 		//call our superclass initComponent method.
-		AEM.Toolbox.Widgets.MultiStructuredList.superclass.initComponent.call(this);
+		AEM.Toolbox.Widgets.StructuredMultiList.superclass.initComponent.call(this);
 	},
 
 	/**
@@ -93,7 +93,7 @@ AEM.Toolbox.Widgets.MultiStructuredList = CQ.Ext.extend(CQ.form.Slideshow, {
 		}
 
 		//call our superclass toolClicked function
-		AEM.Toolbox.Widgets.MultiStructuredList.superclass.toolClicked.call(this, tool);
+		AEM.Toolbox.Widgets.StructuredMultiList.superclass.toolClicked.call(this, tool);
 	},
 
 	/**
@@ -107,7 +107,7 @@ AEM.Toolbox.Widgets.MultiStructuredList = CQ.Ext.extend(CQ.form.Slideshow, {
 		}
 
 		//call our superclass commandToolClicked function
-		AEM.Toolbox.Widgets.MultiStructuredList.superclass.commandToolClicked.call(this, tool);
+		AEM.Toolbox.Widgets.StructuredMultiList.superclass.commandToolClicked.call(this, tool);
 	},
 
 	/**
@@ -136,7 +136,7 @@ AEM.Toolbox.Widgets.MultiStructuredList = CQ.Ext.extend(CQ.form.Slideshow, {
 		}
 
 		//call our superclass handleDrop function
-		AEM.Toolbox.Widgets.MultiStructuredList.superclass.handleDrop.call(this, dragData);
+		AEM.Toolbox.Widgets.StructuredMultiList.superclass.handleDrop.call(this, dragData);
 	},
 
 	/**
@@ -348,7 +348,7 @@ AEM.Toolbox.Widgets.MultiStructuredList = CQ.Ext.extend(CQ.form.Slideshow, {
 			}
 
 			// add existing slide
-			slide = new AEM.Toolbox.Widgets.MultiStructuredList.Slide(slideConfig);
+			slide = new AEM.Toolbox.Widgets.StructuredMultiList.Slide(slideConfig);
 
 			//add our slide to our array and return it.
 			this.slides[sortOrder] = slide;
@@ -377,7 +377,7 @@ AEM.Toolbox.Widgets.MultiStructuredList = CQ.Ext.extend(CQ.form.Slideshow, {
 			}
 
 			//no data provided, just create empty slide with default values.
-			slide = new AEM.Toolbox.Widgets.MultiStructuredList.Slide(slideConfig);
+			slide = new AEM.Toolbox.Widgets.StructuredMultiList.Slide(slideConfig);
 
 			//add our slide to our array and return it.
 			this.slides.push(slide);
@@ -844,4 +844,4 @@ AEM.Toolbox.Widgets.MultiStructuredList = CQ.Ext.extend(CQ.form.Slideshow, {
 
 });
 
-CQ.Ext.reg("multiStructuredList", AEM.Toolbox.Widgets.MultiStructuredList);
+CQ.Ext.reg("structuredmultilist", AEM.Toolbox.Widgets.StructuredMultiList);

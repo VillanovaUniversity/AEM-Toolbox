@@ -1,7 +1,7 @@
 //create widget namespace
-CQ.Ext.ns('AEM.Toolbox.Widgets.MultiStructuredList');
+CQ.Ext.ns('AEM.Toolbox.Widgets.StructuredMultiList');
 
-AEM.Toolbox.Widgets.MultiStructuredList.SlideSettingsPanel = CQ.Ext.extend(CQ.Ext.Panel, {
+AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel = CQ.Ext.extend(CQ.Ext.Panel, {
 
 	/**
 	 * Constructor to create our slide settings panel.
@@ -26,7 +26,7 @@ AEM.Toolbox.Widgets.MultiStructuredList.SlideSettingsPanel = CQ.Ext.extend(CQ.Ex
 		CQ.Util.applyDefaults(config, defaults);
 
 		//call our superclass constructor.
-		AEM.Toolbox.Widgets.MultiStructuredList.SlideSettingsPanel.superclass.constructor.call(this, config);
+		AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel.superclass.constructor.call(this, config);
 	},
 
 	/**
@@ -34,7 +34,7 @@ AEM.Toolbox.Widgets.MultiStructuredList.SlideSettingsPanel = CQ.Ext.extend(CQ.Ex
 	 */
 	initComponent: function() {
 		//call our superclass init
-		AEM.Toolbox.Widgets.MultiStructuredList.SlideSettingsPanel.superclass.initComponent.call(this);
+		AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel.superclass.initComponent.call(this);
 	},
 
 	/**
@@ -42,7 +42,7 @@ AEM.Toolbox.Widgets.MultiStructuredList.SlideSettingsPanel = CQ.Ext.extend(CQ.Ex
 	 */
 	afterRender: function() {
 		//call superclass afterRender
-		AEM.Toolbox.Widgets.MultiStructuredList.SlideSettingsPanel.superclass.afterRender.call(this);
+		AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel.superclass.afterRender.call(this);
 
 		//set the visibility mode for our panel
 		this.el.setVisibilityMode(CQ.Ext.Element.DISPLAY);
