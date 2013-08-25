@@ -28,11 +28,10 @@ import org.osgi.service.component.ComponentContext;
 
 @SlingServlet(resourceTypes = {"sling/servlet/default"}, selectors = {"no.size.img", "size.img"})
 @Properties(value = {
-	@org.apache.felix.scr.annotations.Property(name = ImageServlet.PAGE_404_PROP_NAME, value = ImageServlet.DEFAULT_PAGE_404, propertyPrivate = false),
+	@org.apache.felix.scr.annotations.Property(name = ImageServlet.PAGE_404_PROP_NAME, value = "", propertyPrivate = false),
 	@org.apache.felix.scr.annotations.Property(name = ImageServlet.VALID_DEVICES, cardinality = Integer.MAX_VALUE, value = {"phone", "tablet"}, propertyPrivate = false)
 })
 public class ImageServlet extends AbstractImageServlet {
-	public static final String DEFAULT_PAGE_404 = "/404.html";
 	public static final String PAGE_404_PROP_NAME = "default.page.404";
 	public static final String VALID_DEVICES = "valid.devices";
 	public static final String SKIP_RESIZING_SELECTOR = "no";
@@ -66,7 +65,11 @@ public class ImageServlet extends AbstractImageServlet {
 		//if our url isn't valid or we don't have a resource, return 404
 		if (!hasValidSelectors(req) || ResourceUtil.isNonExistingResource(r)) {
 			res.setStatus(404);
-			req.getRequestDispatcher(pageNotFound).include(req, res);
+
+			//if we have a 404 page configured then display that
+			if (StringUtils.isNotEmpty(this.pageNotFound)) {
+				req.getRequestDispatcher(this.pageNotFound).include(req, res);
+			}
 		} else {
 			super.doGet(req, res);
 		}
