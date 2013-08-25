@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletResponse;
@@ -26,22 +28,43 @@ import org.osgi.service.component.ComponentContext;
 
 @SlingServlet(resourceTypes = {"sling/servlet/default"}, selectors = {"no.size.img", "size.img"})
 @Properties(value = {
-	@org.apache.felix.scr.annotations.Property(name = ImageServlet.PAGE_404_PROP_NAME, value = ImageServlet.DEFAULT_PAGE_404, propertyPrivate = false)
+	@org.apache.felix.scr.annotations.Property(name = ImageServlet.PAGE_404_PROP_NAME, value = ImageServlet.DEFAULT_PAGE_404, propertyPrivate = false),
+	@org.apache.felix.scr.annotations.Property(name = ImageServlet.VALID_DEVICES, cardinality = Integer.MAX_VALUE, value = {"phone", "tablet"}, propertyPrivate = false)
 })
 public class ImageServlet extends AbstractImageServlet {
 	public static final String DEFAULT_PAGE_404 = "/404.html";
 	public static final String PAGE_404_PROP_NAME = "default.page.404";
+	public static final String VALID_DEVICES = "valid.devices";
+	public static final String SKIP_RESIZING_SELECTOR = "no";
+	private static final Set<String> SELECTORS = new HashSet<String>() {{
+		add("no.size.img");
+		add("size.img");
+	}};
+
 	private String pageNotFound;
+	private Set<String> allowedSelectors = new HashSet<String>();
 
 	@SuppressWarnings("UnusedDeclaration")
 	protected void activate(ComponentContext context) {
 		this.pageNotFound = (String) context.getProperties().get(PAGE_404_PROP_NAME);
+		String[] devices = (String[]) context.getProperties().get(VALID_DEVICES);
+
+		//build our allowed selectors
+		for (String selector : SELECTORS) {
+			allowedSelectors.add(selector);
+			for (String device : devices) {
+				allowedSelectors.add(selector + '.' + device);
+			}
+		}
 	}
 
 	@Override
 	protected void doGet(SlingHttpServletRequest req, SlingHttpServletResponse res) throws javax.servlet.ServletException, IOException {
+		//get our resource to validate exists
 		Resource r = req.getResource();
-		if (ResourceUtil.isNonExistingResource(r)) {
+
+		//if our url isn't valid or we don't have a resource, return 404
+		if (!hasValidSelectors(req) || ResourceUtil.isNonExistingResource(r)) {
 			res.setStatus(404);
 			req.getRequestDispatcher(pageNotFound).include(req, res);
 		} else {
@@ -49,6 +72,13 @@ public class ImageServlet extends AbstractImageServlet {
 		}
 	}
 
+	private boolean hasValidSelectors(SlingHttpServletRequest req) {
+		//pull out our selectors
+		String selectors = StringUtils.join(req.getRequestPathInfo().getSelectors(), '.');
+
+		//return if our selectors are allowed
+		return allowedSelectors.contains(selectors);
+	}
 
 	@Override
 	protected Layer createLayer(ImageContext c)
@@ -77,7 +107,7 @@ public class ImageServlet extends AbstractImageServlet {
 		String[] selectors = req.getRequestPathInfo().getSelectors();
 
 		//get whether or not we should apply sizing restrictions
-		boolean applySizing = !"no".equals(selectors[0]);
+		boolean applySizing = !SKIP_RESIZING_SELECTOR.equals(selectors[0]);
 
 		//retrieve our resource properties
 		ValueMap properties = c.resource.adaptTo(ValueMap.class);
