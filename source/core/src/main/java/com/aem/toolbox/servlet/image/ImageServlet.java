@@ -14,6 +14,7 @@ import com.day.cq.wcm.commons.AbstractImageServlet;
 import com.day.cq.wcm.foundation.Image;
 import com.day.image.Layer;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.Properties;
 import org.apache.felix.scr.annotations.sling.SlingServlet;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -72,19 +73,28 @@ public class ImageServlet extends AbstractImageServlet {
 	                          SlingHttpServletResponse resp,
 	                          ImageContext c, Layer layer)
 		throws IOException, RepositoryException {
+		//pull out our selectors
+		String[] selectors = req.getRequestPathInfo().getSelectors();
+
 		//get whether or not we should apply sizing restrictions
-		boolean applySizing = !"no".equals(req.getRequestPathInfo().getSelectors()[0]);
+		boolean applySizing = !"no".equals(selectors[0]);
 
 		//retrieve our resource properties
 		ValueMap properties = c.resource.adaptTo(ValueMap.class);
 
+		//get our property names holding the resizing configuration
+		String propertyPrefix = selectors[selectors.length - 1];
+		if (propertyPrefix == null || "img".equals(propertyPrefix)) {
+			propertyPrefix = StringUtils.EMPTY;
+		}
+
 		//get our size properties from our resource
-		int width = properties.get("hardwidth", 0);
-		int height = properties.get("hardheight", 0);
-		int maxWidth = properties.get("maxwidth", 0);
-		int maxHeight = properties.get("maxheight", 0);
-		int minWidth = properties.get("minwidth", 0);
-		int minHeight = properties.get("minheight", 0);
+		int width = properties.get(propertyPrefix + "hardwidth", 0);
+		int height = properties.get(propertyPrefix + "hardheight", 0);
+		int maxWidth = properties.get(propertyPrefix + "maxwidth", 0);
+		int maxHeight = properties.get(propertyPrefix + "maxheight", 0);
+		int minWidth = properties.get(propertyPrefix + "minwidth", 0);
+		int minHeight = properties.get(propertyPrefix + "minheight", 0);
 
 		Image image = new Image(c.resource);
 		if (!image.hasContent()) {
