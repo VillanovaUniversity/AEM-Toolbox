@@ -3,6 +3,7 @@ CQ.Ext.ns('AEM.Toolbox.Widgets.rte.commands');
 
 AEM.Toolbox.Widgets.rte.commands.RTEBlockquoteCommand = CQ.Ext.extend(CQ.form.rte.commands.Command, {
 
+	//determines if the command provided is a match for this command object.
 	isCommand:function (cmdStr) {
 		return (cmdStr.toLowerCase() == "rteblockquotecommand");
 	},
@@ -12,6 +13,7 @@ AEM.Toolbox.Widgets.rte.commands.RTEBlockquoteCommand = CQ.Ext.extend(CQ.form.rt
 		return cmd.PO_BOOKMARK | cmd.PO_SELECTION;
 	},
 
+	//called by plugin to execute this command.
 	execute:function (execDef) {
 		//get our dom processor.
 		var dpr = CQ.form.rte.DomProcessor;
@@ -119,6 +121,8 @@ AEM.Toolbox.Widgets.rte.commands.RTEBlockquoteCommand = CQ.Ext.extend(CQ.form.rt
 		}
 	},
 
+	//called by the plugin to determine the state of this command.
+	//information returned to the plugin can allow the plugin to manipulate the UI.
 	queryState:function (selectionDef, cmd) {
 		//only execute if we are the correct command.
 		if (!this.isCommand(cmd)) {

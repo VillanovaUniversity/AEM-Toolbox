@@ -3,6 +3,7 @@ CQ.Ext.ns('AEM.Toolbox.Widgets.rte.commands');
 
 AEM.Toolbox.Widgets.rte.commands.RTELinedBlockquoteCommand = CQ.Ext.extend(AEM.Toolbox.Widgets.rte.commands.RTEBlockquoteCommand, {
 
+	//determines if the command provided is a match for this command object.
 	isCommand:function (cmdStr) {
 		return (cmdStr.toLowerCase() == "rtelinedblockquotecommand");
 	},

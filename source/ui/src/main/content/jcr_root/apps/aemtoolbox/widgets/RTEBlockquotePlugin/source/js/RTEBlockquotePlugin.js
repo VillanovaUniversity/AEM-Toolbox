@@ -16,22 +16,27 @@ AEM.Toolbox.Widgets.rte.plugins.RTEBlockquotePlugin = CQ.Ext.extend(CQ.form.rte.
 		AEM.Toolbox.Widgets.rte.plugins.RTEBlockquotePlugin.superclass.constructor.call(this, editorKernel);
 	},
 
+	//returns all features this plugin supports.
 	getFeatures:function () {
 		return [ "blockquote", "linedblockquote" ];
 	},
 
+	//called by rte kernel when rte is first generated.
 	initializeUI:function (tbGenerator) {
 		var ui = CQ.form.rte.ui;
 		if (this.isFeatureEnabled("blockquote")) {
 			this.blockquoteUI = new ui.TbElement("blockquote", this, true, this.getTooltip("blockquote"));
+			//toolbar builder addElement method takes (groupId, groupSort, uiElement, uiElementSort)
 			tbGenerator.addElement("blockquote", 1100, this.blockquoteUI, 110);
 		}
 		if (this.isFeatureEnabled("linedblockquote")) {
 			this.linedBlockquoteUI = new ui.TbElement("linedblockquote", this, true, this.getTooltip("linedblockquote"));
+			//toolbar builder addElement method takes (groupId, groupSort, uiElement, uiElementSort)
 			tbGenerator.addElement("blockquote", 1200, this.linedBlockquoteUI, 110);
 		}
 	},
 
+	//this is where we can add some hard defaults for our plugin config.
 	notifyPluginConfig:function (pluginConfig) {
 		// configuring "blockquote" dialog
 		pluginConfig = pluginConfig || { };
@@ -51,6 +56,7 @@ AEM.Toolbox.Widgets.rte.plugins.RTEBlockquotePlugin = CQ.Ext.extend(CQ.form.rte.
 		this.config = pluginConfig;
 	},
 
+	//called when a command is pressed for this plugin.
 	execute:function (cmd, value, options) {
 		if (cmd == "blockquote" && this.blockquoteUI) {
 			this.editorKernel.relayCmd("rteblockquotecommand", this.blockquoteUI.getExtUI().pressed);
@@ -60,6 +66,7 @@ AEM.Toolbox.Widgets.rte.plugins.RTEBlockquotePlugin = CQ.Ext.extend(CQ.form.rte.
 		}
 	},
 
+	//called when some action is performed in the rte.
 	updateState:function (selDef) {
 		if (this.blockquoteUI && this.blockquoteUI.getExtUI()) {
 			//set button state.
