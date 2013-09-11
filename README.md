@@ -21,36 +21,39 @@ Hard Width/Height Resizing:
 Provides a way to serve images with exact height and width dimensions without images becoming distorted.  Images will first be scaled proportionally until its closes edge hits the target dimensions.  Then the extra fat will be cropped from the top/bottom or left/right of the image.
 
 * Configure any smartimage widgets to use 'hardwidth' and/or 'hardheight' properties.
-* Modify image url to use '.size.img' selectors. (http://<host>:<port>/content/<app>/en/.../image.size.img.jpg)
+* Modify image url to use '.size.img' selectors. `http://<host>:<port>/content/<app>/en/.../image.size.img.jpg`
 
 Max Width/Height Resizing:
 Provides a way to serve images no larger than the configured dimensions.  Images are scaled proportionally.
 
 * Configure any smartimage widgets to use 'maxwidth' and/or 'maxheight' properties.
-* Modify image url to use '.size.img' selectors. (http://<host>:<port>/content/<app>/en/.../image.size.img.jpg)
+* Modify image url to use '.size.img' selectors. `http://<host>:<port>/content/<app>/en/.../image.size.img.jpg`
 
 Min Width/Height Resizing:
 Provides a way to serve images no smaller than the configured dimensions.  Images are scaled proportionally.
 
 * Configure any smartimage widgets to use 'minwidth' and/or 'minheight' properties.
-* Modify image url to use '.size.img' selectors. (http://<host>:<port>/content/<app>/en/.../image.size.img.jpg)
+* Modify image url to use '.size.img' selectors. `http://<host>:<port>/content/<app>/en/.../image.size.img.jpg`
 
 Skip Image Resizing:
 At times you may want to reuse an image configured by a content author, but skip the image resizing.  This can come in handy in an image gallery where the thumbnail is resized, but the larger image is not.
 
-* Modify image url to use '.no.size.img' selectors. (http://<host>:<port>/content/<app>/en/.../image.no.size.img.jpg)
+* Modify image url to use '.no.size.img' selectors. `http://<host>:<port>/content/<app>/en/.../image.no.size.img.jpg`
 
 Multiple Configurations:
 When dealing with responsive design, we need multiple image resizing configurations.  The provided image servlet does this by using custom configured suffixes at the end of the image url.  This provides the developer the option of creating any number of resizing configurations needed.
 
-* Create an sling:OsgiConfig at /apps/<app>/config/com.aem.toolbox.servlet.image.ImageServlet.xml similar to the configuration below.  You will want to add your custom configurations to the valid.devices area.  By default the image servlet is configured with phone and tablet.
-```<?xml version="1.0" encoding="UTF-8"?>
-<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+* Create an sling:OsgiConfig at `/apps/<app>/config/com.aem.toolbox.servlet.image.ImageServlet.xml` similar to the configuration below.  You will want to add your custom configurations to the valid.devices area.  By default the image servlet is configured with phone and tablet.
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root
+	xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+	xmlns:jcr="http://www.jcp.org/jcr/1.0"
 	jcr:primaryType="sling:OsgiConfig"
 	valid.devices="[phone,tablet]" />
-	```
+```
 * Configure any smartimage widgets to use device specific configurations. (ex. phonehardheight, phonehardwidth, phonemaxheight, phonemaxwidth, phoneminheight, phoneminwidth, tablethardheight, tablethardwidth, etc.)
-* Modify image url to use device specific configuration '.size.img.phone'. (http://<host>:<port>/content/<app>/en/.../image.size.img.phone.jpg).  Note: You will need to implement custom code for choosing the correct suffix for your image url.
+* Modify image url to use device specific configuration '.size.img.phone'. `http://<host>:<port>/content/<app>/en/.../image.size.img.phone.jpg`.  Note: You will need to implement custom code for choosing the correct suffix for your image url.
 
 ## Widgets
 
@@ -70,7 +73,8 @@ This widget allows content authors to enter collections of data within a single 
 * settings:  A cq:WidgetCollection that allows you to configure widgets for any additional data you need collected for each item.
 * useForDisplay:  Can be added to any widget in the settings area to indicate that the value added to this widget should be used in the header dropdown.
 
-```<?xml version="1.0" encoding="UTF-8"?>
+```
+<?xml version="1.0" encoding="UTF-8"?>
 <jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
 	jcr:primaryType="cq:Dialog"
 	height="500"
@@ -154,13 +158,14 @@ Allows content authors to search a YouTube channel for embedding videos into a c
 * Configure your component dialog so it contains a widget with xtype 'youtubesearch'.
 * youtubeUser:  Allows us to configure a user for limiting what videos are searched against.
 
-```<youtubevideo
+```
+<youtubevideo
 	jcr:primaryType="cq:Widget"
 	fieldLabel="Youtube Video"
 	name="./videoId"
 	youtubeUser=""
 	xtype="youtubesearch"/>
-	```
+```
 
 ## RTE Blockquote Plugin
 
@@ -169,7 +174,8 @@ Provides additional buttons in the RTE for wrapping content in a <blockquote/> t
 * Configure your RTE with the blockquote plugin and configure any features you want enabled.
 * Add blockquote and linedblockquote css styles to the RTE and website pages.
 
-```<content
+```
+<content
 	jcr:primaryType="cq:Widget"
 	externalStyleSheets="[/css/wysiwyg.css]"
 	hideLabel="{Boolean}true"
@@ -186,13 +192,15 @@ Provides additional buttons in the RTE for wrapping content in a <blockquote/> t
 ```
 
 Blockquote HTML Structure:
-```<blockquote>
+```
+<blockquote>
 	<p>Blockquote Content</p>
 </blockquote>
 ```
 
 Lined Blockquote HTML Structure:
-```<blockquote>
+```
+<blockquote>
 	<p class="lined">Lined Blockquote Content</p>
 </blockquote>
 ```
@@ -206,7 +214,8 @@ Extends the AEM format plugin to allow specifying formats that will change both 
 * blacklist:  A cq:WidgetCollection where you configure what tags should be ignored by this plugin.  For example, we may not want this plugin to switch out the td tag of a table.
 * Add any css styles needed for the formats configured.
 
-```<content
+```
+<content
 	jcr:primaryType="cq:Widget"
 	externalStyleSheets="[/css/wysiwyg.css]"
 	hideLabel="{Boolean}true"
