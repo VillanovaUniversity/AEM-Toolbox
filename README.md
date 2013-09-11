@@ -44,6 +44,7 @@ Multiple Configurations:
 When dealing with responsive design, we need multiple image resizing configurations.  The provided image servlet does this by using custom configured suffixes at the end of the image url.  This provides the developer the option of creating any number of resizing configurations needed.
 
 * Create an sling:OsgiConfig at `/apps/<app>/config/com.aem.toolbox.servlet.image.ImageServlet.xml` similar to the configuration below.  You will want to add your custom configurations to the valid.devices area.  By default the image servlet is configured with phone and tablet.
+
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <jcr:root
@@ -52,6 +53,7 @@ When dealing with responsive design, we need multiple image resizing configurati
 	jcr:primaryType="sling:OsgiConfig"
 	valid.devices="[phone,tablet]" />
 ```
+
 * Configure any smartimage widgets to use device specific configurations. (ex. phonehardheight, phonehardwidth, phonemaxheight, phonemaxwidth, phoneminheight, phoneminwidth, tablethardheight, tablethardwidth, etc.)
 * Modify image url to use device specific configuration '.size.img.phone'. `http://<host>:<port>/content/<app>/en/.../image.size.img.phone.jpg`.  Note: You will need to implement custom code for choosing the correct suffix for your image url.
 
