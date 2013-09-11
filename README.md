@@ -47,7 +47,8 @@ When dealing with responsive design, we need multiple image resizing configurati
 ```<?xml version="1.0" encoding="UTF-8"?>
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
 	jcr:primaryType="sling:OsgiConfig"
-	valid.devices="[phone,tablet]" />```
+	valid.devices="[phone,tablet]" />
+	```
 * Configure any smartimage widgets to use device specific configurations. (ex. phonehardheight, phonehardwidth, phonemaxheight, phonemaxwidth, phoneminheight, phoneminwidth, tablethardheight, tablethardwidth, etc.)
 * Modify image url to use device specific configuration '.size.img.phone'. (http://<host>:<port>/content/<app>/en/.../image.size.img.phone.jpg).  Note: You will need to implement custom code for choosing the correct suffix for your image url.
 
@@ -143,7 +144,8 @@ This widget allows content authors to enter collections of data within a single 
 			</carouselslides>
 		</items>
 	</items>
-</jcr:root>```
+</jcr:root>
+```
 
 ## YouTube Search Widget
 
@@ -157,7 +159,8 @@ Allows content authors to search a YouTube channel for embedding videos into a c
 	fieldLabel="Youtube Video"
 	name="./videoId"
 	youtubeUser=""
-	xtype="youtubesearch"/>```
+	xtype="youtubesearch"/>
+	```
 
 ## RTE Blockquote Plugin
 
@@ -179,17 +182,20 @@ Provides additional buttons in the RTE for wrapping content in a <blockquote/> t
 			jcr:primaryType="nt:unstructured"
 			features="*"/>
 	</rtePlugins>
-</content>```
+</content>
+```
 
 Blockquote HTML Structure:
 ```<blockquote>
 	<p>Blockquote Content</p>
-</blockquote>```
+</blockquote>
+```
 
 Lined Blockquote HTML Structure:
 ```<blockquote>
 	<p class="lined">Lined Blockquote Content</p>
-</blockquote>```
+</blockquote>
+```
 
 ## RTE Formatting Plugin
 
@@ -277,4 +283,5 @@ Extends the AEM format plugin to allow specifying formats that will change both 
 			</blacklist>
 	</formatting>
 	</rtePlugins>
-</content>```
+</content>
+```
