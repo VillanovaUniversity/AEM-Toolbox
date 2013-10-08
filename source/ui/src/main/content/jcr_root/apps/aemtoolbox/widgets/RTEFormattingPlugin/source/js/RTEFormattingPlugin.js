@@ -61,7 +61,8 @@ AEM.Toolbox.Widgets.rte.plugins.RTEFormattingPlugin = CQ.Ext.extend(CQ.form.rte.
 		var plg = CQ.form.rte.plugins;
 		var ui = AEM.Toolbox.Widgets.rte.ui;
 		if (this.isFeatureEnabled("paraformat")) {
-			this.formatUI = new ui.RTEFormattingUI("paraformat", this, null, this.getFormats());
+            // Use th CUI.rte.ui.ext.ParaFormatterImpl constructor
+            this.formatUI = new ui.RTEFormattingUI("paraformat", this, null, "Formats", null, null, this.getFormats());
 			tbGenerator.addElement("paraformat", plg.Plugin.SORT_PARAFORMAT, this.formatUI, 10);
 		}
 	},

@@ -1,10 +1,11 @@
 //create widget namespace
 CQ.Ext.ns('AEM.Toolbox.Widgets.rte.ui');
 
-AEM.Toolbox.Widgets.rte.ui.RTEFormattingUI = CQ.Ext.extend(CQ.form.rte.ui.TbParaFormatter, {
-	constructor: function(id, plugin, tooltip, formats) {
-		AEM.Toolbox.Widgets.rte.ui.RTEFormattingUI.superclass.constructor.call(this, id, plugin, tooltip, formats);
-	},
+AEM.Toolbox.Widgets.rte.ui.RTEFormattingUI = new Class({
+
+    toString: "RTEFormattingUI",
+
+    extend: CUI.rte.ui.ext.ParaFormatterImpl,
 
 	createFormatOptions: function() {
 		var htmlCode = "<option value=\"--\">-- Select Format --</option>";
@@ -23,4 +24,5 @@ AEM.Toolbox.Widgets.rte.ui.RTEFormattingUI = CQ.Ext.extend(CQ.form.rte.ui.TbPara
 		}
 		return htmlCode;
 	}
+
 });
