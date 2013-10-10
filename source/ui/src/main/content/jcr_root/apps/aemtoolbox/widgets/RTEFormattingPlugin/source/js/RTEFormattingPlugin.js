@@ -4,11 +4,11 @@ CQ.Ext.ns('AEM.Toolbox.Widgets.rte.plugins');
 AEM.Toolbox.Widgets.rte.plugins.RTEFormattingPlugin = CQ.Ext.extend(CQ.form.rte.plugins.ParagraphFormatPlugin, {
 	cachedBlacklist: null,
 
-	constructor: function(editorKernel) {
+	constructor: function (editorKernel) {
 		AEM.Toolbox.Widgets.rte.plugins.RTEFormattingPlugin.superclass.constructor.call(this, editorKernel);
 	},
 
-	getFormatId: function(dom) {
+	getFormatId: function (dom) {
 		//create our dom format id
 		var domFormatId = this.createFormatId(dom.tagName, dom.classList);
 
@@ -30,7 +30,7 @@ AEM.Toolbox.Widgets.rte.plugins.RTEFormattingPlugin = CQ.Ext.extend(CQ.form.rte.
 		return null;
 	},
 
-	getFormats: function() {
+	getFormats: function () {
 		var com = CQ.form.rte.Common;
 		if (this.cachedFormats == null) {
 			this.cachedFormats = this.config.formats || { };
@@ -40,7 +40,7 @@ AEM.Toolbox.Widgets.rte.plugins.RTEFormattingPlugin = CQ.Ext.extend(CQ.form.rte.
 		return this.cachedFormats;
 	},
 
-	getFormatById: function(formats, id) {
+	getFormatById: function (formats, id) {
 		var formatCnt = formats.length;
 		for (var f = 0; f < formatCnt; f++) {
 			//get current format definition
@@ -57,17 +57,17 @@ AEM.Toolbox.Widgets.rte.plugins.RTEFormattingPlugin = CQ.Ext.extend(CQ.form.rte.
 		return null;
 	},
 
-	initializeUI: function(tbGenerator) {
+	initializeUI: function (tbGenerator) {
 		var plg = CQ.form.rte.plugins;
 		var ui = AEM.Toolbox.Widgets.rte.ui;
 		if (this.isFeatureEnabled("paraformat")) {
-            // Use th CUI.rte.ui.ext.ParaFormatterImpl constructor
-            this.formatUI = new ui.RTEFormattingUI("paraformat", this, null, "Formats", null, null, this.getFormats());
+			// Use th CUI.rte.ui.ext.ParaFormatterImpl constructor
+			this.formatUI = new ui.RTEFormattingUI("paraformat", this, null, "Formats", null, null, this.getFormats());
 			tbGenerator.addElement("paraformat", plg.Plugin.SORT_PARAFORMAT, this.formatUI, 10);
 		}
 	},
 
-	execute: function(cmd) {
+	execute: function (cmd) {
 		if (this.formatUI) {
 			var formatId = this.formatUI.getSelectedFormat();
 			if (formatId && formatId != "--") {
@@ -76,8 +76,8 @@ AEM.Toolbox.Widgets.rte.plugins.RTEFormattingPlugin = CQ.Ext.extend(CQ.form.rte.
 		}
 	},
 
-	updateState: function(selDef) {
-		if (!this.formatUI || !this.formatUI.getExtUI()) {
+	updateState: function (selDef) {
+		if (!this.formatUI || !this.formatUI.getSelectorDom()) {
 			return;
 		}
 
@@ -85,7 +85,7 @@ AEM.Toolbox.Widgets.rte.plugins.RTEFormattingPlugin = CQ.Ext.extend(CQ.form.rte.
 		AEM.Toolbox.Widgets.rte.plugins.RTEFormattingPlugin.superclass.updateState.call(this, selDef);
 
 		//if our superclass method couldn't find a selection don't disable, instead show select option.
-		var selectorDom = this.formatUI.getExtUI().dom;
+		var selectorDom = this.formatUI.getSelectorDom();
 		if (!selectorDom.disabled && selectorDom.selectedIndex > -1) {
 			return;
 		}
@@ -125,7 +125,7 @@ AEM.Toolbox.Widgets.rte.plugins.RTEFormattingPlugin = CQ.Ext.extend(CQ.form.rte.
 		}
 	},
 
-	createFormatId: function(tag, classNames) {
+	createFormatId: function (tag, classNames) {
 		var formatId = tag;
 		if (classNames != null) {
 			for (var i = 0; i < classNames.length; i++) {
@@ -135,7 +135,7 @@ AEM.Toolbox.Widgets.rte.plugins.RTEFormattingPlugin = CQ.Ext.extend(CQ.form.rte.
 		return formatId.toLowerCase();
 	},
 
-	isBlacklisted: function(dom) {
+	isBlacklisted: function (dom) {
 		var tagName = dom.tagName.toLowerCase();
 		var blacklist = this.getBlacklist();
 		var blacklistCnt = blacklist.length;
@@ -148,7 +148,7 @@ AEM.Toolbox.Widgets.rte.plugins.RTEFormattingPlugin = CQ.Ext.extend(CQ.form.rte.
 		return false;
 	},
 
-	getBlacklist: function() {
+	getBlacklist: function () {
 		var com = CQ.form.rte.Common;
 		if (this.cachedBlacklist == null) {
 			this.cachedBlacklist = this.config.blacklist || { };
