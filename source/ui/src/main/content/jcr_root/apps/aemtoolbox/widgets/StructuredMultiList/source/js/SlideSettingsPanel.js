@@ -6,7 +6,7 @@ AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel = CQ.Ext.extend(CQ.Ex
 	/**
 	 * Constructor to create our slide settings panel.
 	 */
-	constructor: function(config) {
+	constructor: function (config) {
 		//be sure our config is an object.
 		config = config || { };
 
@@ -32,7 +32,7 @@ AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel = CQ.Ext.extend(CQ.Ex
 	/**
 	 * Init our slide settings panel
 	 */
-	initComponent: function() {
+	initComponent: function () {
 		//call our superclass init
 		AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel.superclass.initComponent.call(this);
 	},
@@ -40,7 +40,7 @@ AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel = CQ.Ext.extend(CQ.Ex
 	/**
 	 * Called after the ui renders the settings panel.
 	 */
-	afterRender: function() {
+	afterRender: function () {
 		//call superclass afterRender
 		AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel.superclass.afterRender.call(this);
 
@@ -52,7 +52,7 @@ AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel = CQ.Ext.extend(CQ.Ex
 	/**
 	 * Will validate our slide settings panel and return a boolean result.
 	 */
-	validate: function() {
+	validate: function () {
 		//validate each field and if any fails then return false.
 		for (var i = 0; i < this.items.keys.length; i++) {
 			var field = this.items.get(this.items.keys[i]);
@@ -70,7 +70,7 @@ AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel = CQ.Ext.extend(CQ.Ex
 	 * @param settingId    The setting id to set.
 	 * @param settingValue The value to set.
 	 */
-	setSettingValue: function(settingId, settingValue) {
+	setSettingValue: function (settingId, settingValue) {
 		var field = this.items.get(settingId);
 		field.setValue(settingValue ? settingValue : "");
 	},
@@ -79,7 +79,7 @@ AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel = CQ.Ext.extend(CQ.Ex
 	 * Will get a setting value based on the id passed.
 	 * @param settingId The setting id to get.
 	 */
-	getSettingValue: function(settingId) {
+	getSettingValue: function (settingId) {
 		var field = this.items.get(settingId);
 		return field.getValue();
 	},
@@ -87,18 +87,24 @@ AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel = CQ.Ext.extend(CQ.Ex
 	/**
 	 * Will disable all form fields.
 	 */
-	disableFormElements: function() {
+	disableFormElements: function () {
 		for (var i = 0; i < this.items.keys.length; i++) {
-			this.items.get(this.items.keys[i]).disable();
+			var curItem = this.items.get(this.items.keys[i]);
+			if (!curItem.disabled) {
+				curItem.disable();
+			}
 		}
 	},
 
 	/**
 	 * Will enable all form fields.
 	 */
-	enableFormElements: function() {
+	enableFormElements: function () {
 		for (var i = 0; i < this.items.keys.length; i++) {
-			this.items.get(this.items.keys[i]).enable();
+			var curItem = this.items.get(this.items.keys[i]);
+			if (curItem.disabled) {
+				curItem.enable();
+			}
 		}
 	}
 
