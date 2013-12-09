@@ -6,7 +6,8 @@ This project aims to provide additional tools that can be used for developing ap
 
 ## Prerequisites
 
-* CQ 5.5 - The tools in this project have been confirmed on CQ 5.5.
+* AEM 5.6.1 - The tools in this project have been confirmed on AEM 5.6.1.
+  - NOTE: For CQ 5.5, please see the CQ5.5 release tag at  https://github.com/Velir/AEM-Toolbox/releases/tag/CQ5.5.
 
 ## Installation
 
