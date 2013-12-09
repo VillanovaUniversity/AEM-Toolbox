@@ -114,7 +114,6 @@
 							com.aem.*; version="${project.version}",
 						</Export-Package>
 						<Import-Package>*</Import-Package>
-						<Include-Resource>{maven-resources}</Include-Resource>
 						<Embed-Dependency>*;scope=compile</Embed-Dependency>
 						<Service-Component>OSGI-INF/serviceComponents.xml</Service-Component>
 						<Sling-Test-Regexp>.*Test</Sling-Test-Regexp>
