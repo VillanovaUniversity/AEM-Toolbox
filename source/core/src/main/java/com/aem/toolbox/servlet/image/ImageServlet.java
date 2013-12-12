@@ -4,12 +4,14 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletResponse;
 
+import com.aem.toolbox.bean.ImageSelector;
 import com.day.cq.commons.ImageHelper;
 import com.day.cq.commons.ImageResource;
 import com.day.cq.wcm.commons.AbstractImageServlet;
@@ -29,32 +31,34 @@ import org.osgi.service.component.ComponentContext;
 @SlingServlet(resourceTypes = {"sling/servlet/default"}, selectors = {"no.size.img", "size.img"})
 @Properties(value = {
 	@org.apache.felix.scr.annotations.Property(name = ImageServlet.PAGE_404_PROP_NAME, value = "", propertyPrivate = false),
-	@org.apache.felix.scr.annotations.Property(name = ImageServlet.VALID_DEVICES, cardinality = Integer.MAX_VALUE, value = {"phone", "tablet"}, propertyPrivate = false)
+	@org.apache.felix.scr.annotations.Property(name = ImageServlet.VALID_DEVICES, cardinality = Integer.MAX_VALUE, value = {"phone", "tablet"}, propertyPrivate = false),
+	@org.apache.felix.scr.annotations.Property(name = ImageServlet.VALID_SIZES, cardinality = Integer.MAX_VALUE, value = {}, propertyPrivate = false, description = "Specify the sizes supported by the servlet. The format is WIDTHxHEIGHT")
 })
 public class ImageServlet extends AbstractImageServlet {
 	public static final String PAGE_404_PROP_NAME = "default.page.404";
 	public static final String VALID_DEVICES = "valid.devices";
+	public static final String VALID_SIZES = "valid.sizes";
+
 	public static final String SKIP_RESIZING_SELECTOR = "no";
-	private static final Set<String> SELECTORS = new HashSet<String>() {{
-		add("no.size.img");
-		add("size.img");
-	}};
 
 	private String pageNotFound;
-	private Set<String> allowedSelectors = new HashSet<String>();
+	private Set<String> allowedSelectors = Collections.emptySet();
 
 	@SuppressWarnings("UnusedDeclaration")
 	protected void activate(ComponentContext context) {
-		this.pageNotFound = (String) context.getProperties().get(PAGE_404_PROP_NAME);
-		String[] devices = (String[]) context.getProperties().get(VALID_DEVICES);
+		pageNotFound = (String) context.getProperties().get(PAGE_404_PROP_NAME);
+		allowedSelectors = buildAllowedSelectorList((String[]) context.getProperties().get(VALID_DEVICES));
+	}
 
-		//build our allowed selectors
-		for (String selector : SELECTORS) {
-			allowedSelectors.add(selector);
+	private Set<String> buildAllowedSelectorList(String[] devices) {
+		Set<String> selectors = new HashSet<String>();
+		for (ImageSelector selector : ImageSelector.values()) {
+			selectors.add(selector.toString());
 			for (String device : devices) {
-				allowedSelectors.add(selector + '.' + device);
+				selectors.add(selector.toString() + '.' + device);
 			}
 		}
+		return selectors;
 	}
 
 	@Override
@@ -79,7 +83,6 @@ public class ImageServlet extends AbstractImageServlet {
 		//pull out our selectors
 		String selectors = StringUtils.join(req.getRequestPathInfo().getSelectors(), '.');
 
-		//return if our selectors are allowed
 		return allowedSelectors.contains(selectors);
 	}
 
