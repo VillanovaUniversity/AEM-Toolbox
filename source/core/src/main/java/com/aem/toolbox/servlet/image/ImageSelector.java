@@ -19,9 +19,4 @@ public enum ImageSelector {
 	public String getValue() {
 		return value;
 	}
-
-	@Override
-	public final String toString() {
-		return value;
-	}
 }
