@@ -59,13 +59,19 @@ AEM.Toolbox.Widgets.StructuredMultiList.Slide = CQ.Ext.extend(CQ.Ext.emptyFn, {
 	 * @cfg {String} hideImage
 	 * If this slide has an image or not
 	 */
-	hideImage : false,
+	hideImage: false,
+
+	/**
+	 * @cfg {String} itemResourceType
+	 * The sling:resourceType to assign to this slide when it is stored to the jcr.
+	 */
+	itemResourceType: '',
 
 
 	/**
 	 * Constructor for creating a new slide.
 	 */
-	constructor: function(config) {
+	constructor: function (config) {
 		//create default configuration
 		var defaults = {
 			"referencedFileInfo": null,
@@ -73,8 +79,8 @@ AEM.Toolbox.Widgets.StructuredMultiList.Slide = CQ.Ext.extend(CQ.Ext.emptyFn, {
 			"isDeleted": false,
 			"slideIndex": -1,
 			"sortOrder": -1,
-			hideImage : false,
-			"defaultSlideName" : "New slide"
+			hideImage: false,
+			"defaultSlideName": "New slide"
 		};
 
 		//apply our configuration.
@@ -84,7 +90,7 @@ AEM.Toolbox.Widgets.StructuredMultiList.Slide = CQ.Ext.extend(CQ.Ext.emptyFn, {
 	/**
 	 * Will create the text to be displayed in the combobox.
 	 */
-	createDisplayText: function() {
+	createDisplayText: function () {
 		//try to find value specified in configuration
 		var displayField;
 		for (var i = 0; i < this.items.length; i++) {
@@ -102,23 +108,23 @@ AEM.Toolbox.Widgets.StructuredMultiList.Slide = CQ.Ext.extend(CQ.Ext.emptyFn, {
 				return this.referencedFileInfo.dataPath;
 			} else {
 				//default to new slide text.
-				return this.defaultSlideName? this.defaultSlideName :"New Slide";
+				return this.defaultSlideName ? this.defaultSlideName : "New Slide";
 			}
 		}
 	},
 
-	isEmptySlide : function(){
+	isEmptySlide: function () {
 		var isEmpty = true;
 
-        if (this.referencedFileInfo) {
-            return false;
-        }
+		if (this.referencedFileInfo) {
+			return false;
+		}
 
 		//go through each item and get push our values
 		for (var i = 0; i < this.items.length; i++) {
 			var itemValue = this[this.items[i].itemId];
 			var itemName = this.items[i].name;
-			if(itemValue){
+			if (itemValue) {
 				isEmpty = false;
 				break;
 			}
@@ -129,7 +135,7 @@ AEM.Toolbox.Widgets.StructuredMultiList.Slide = CQ.Ext.extend(CQ.Ext.emptyFn, {
 	/**
 	 * Create and return the fields used to save our slide to the jcr.
 	 */
-	createTransferFields: function(prefix) {
+	createTransferFields: function (prefix) {
 		//initialize our fields array
 		var fields = [ ];
 
@@ -137,11 +143,11 @@ AEM.Toolbox.Widgets.StructuredMultiList.Slide = CQ.Ext.extend(CQ.Ext.emptyFn, {
 		var basicName = prefix.replace("$", this.slideIndex);
 
 		//Common function to add hidden fields
-		var addHidden = function(hiddenName, hiddenValue){
+		var addHidden = function (hiddenName, hiddenValue) {
 			var hiddenInput = new CQ.Ext.form.Hidden({
-				"ignoreData" : true,
-				"name" : basicName + "/" + hiddenName,
-				"value" : hiddenValue
+				"ignoreData": true,
+				"name": basicName + "/" + hiddenName,
+				"value": hiddenValue
 			});
 			fields.push(hiddenInput);
 		};
@@ -149,7 +155,7 @@ AEM.Toolbox.Widgets.StructuredMultiList.Slide = CQ.Ext.extend(CQ.Ext.emptyFn, {
 		//if our slide isn't being deleted then create hidden fields
 		//for its values and add then to our array.
 		if (!this.isDeleted && !this.isEmptySlide()) {
-			addHidden("fileReference",this.referencedFileInfo? this.referencedFileInfo.dataPath : "");
+			addHidden("fileReference", this.referencedFileInfo ? this.referencedFileInfo.dataPath : "");
 
 			//go through each item and get push our values
 			for (var i = 0; i < this.items.length; i++) {
@@ -158,51 +164,51 @@ AEM.Toolbox.Widgets.StructuredMultiList.Slide = CQ.Ext.extend(CQ.Ext.emptyFn, {
 				var itemName = item.name;
 
 				//if multi push each field separately
-				if(!(itemValue instanceof Array)){
+				if (!(itemValue instanceof Array)) {
 					itemValue = [ itemValue ];
 				}
 
 				//if checkbox and has checkboxTypeHint, send 'false' when unclicked
 				var hasNoValue = !itemValue || itemValue.length == 0;
 				var isCheckbox = item.xtype == "selection" && item.type == "checkbox";
-				if(isCheckbox && item.checkboxBoolTypeHint && hasNoValue){
+				if (isCheckbox && item.checkboxBoolTypeHint && hasNoValue) {
 					itemValue = ["false"];
 				}
 
 				//if datetime and requires typehint, be sure to include it
-				if(item.xtype == "datetime" && !item.disableTypeHint){
+				if (item.xtype == "datetime" && !item.disableTypeHint) {
 					addHidden(itemName + "@TypeHint", item.typeHint ? item.typeHint : "Date");
 				}
 
-				for(var j = 0; j < itemValue.length; j++){
+				for (var j = 0; j < itemValue.length; j++) {
 					var value = itemValue[j];
-					addHidden(itemName, value? value :"");
+					addHidden(itemName, value ? value : "");
 				}
 			}
 
-			addHidden("imageCrop", this.imageCrop? this.imageCrop :"");
-			addHidden("imageRotate", this.imageRotate? this.imageRotate :"");
+			addHidden("imageCrop", this.imageCrop ? this.imageCrop : "");
+			addHidden("imageRotate", this.imageRotate ? this.imageRotate : "");
 
 			addHidden("SortOrder", this.sortOrder);
 
-			if(!this.hideImage){
-				addHidden("sling:resourceType","foundation/components/image");
+			if (!this.hideImage) {
+				addHidden("sling:resourceType", this.itemResourceType);
 			}
 
 			//Set image sizing properties
-			if(this.maxwidth){
+			if (this.maxwidth) {
 				addHidden("maxwidth", this.maxwidth);
 			}
 
-			if(this.maxheight){
+			if (this.maxheight) {
 				addHidden("maxheight", this.maxheight);
 			}
 
-			if(this.hardheight){
+			if (this.hardheight) {
 				addHidden("hardheight", this.hardheight);
 			}
 
-			if(this.hardwidth){
+			if (this.hardwidth) {
 				addHidden("hardwidth", this.hardwidth);
 			}
 		} else if (this.isPersistent) {

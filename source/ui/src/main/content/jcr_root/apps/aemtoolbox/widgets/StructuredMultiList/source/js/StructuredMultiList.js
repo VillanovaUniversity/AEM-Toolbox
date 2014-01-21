@@ -18,10 +18,12 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 
 	hideImage: false,
 
+	itemResourceType: '',
+
 	/**
 	 * Constructor for this carousel builder.
 	 */
-	constructor: function(config) {
+	constructor: function (config) {
 		//be sure our config is at least an object
 		config = config || { };
 
@@ -36,7 +38,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 				"onRemoveButton": this.onRemoveButton.createDelegate(this),
 				"onUpButton": this.onUpButton.createDelegate(this),
 				"onDownButton": this.onDownButton.createDelegate(this),
-				maxSlides : maxSlides
+				maxSlides: maxSlides
 			}),
 			"footPanel": new AEM.Toolbox.Widgets.StructuredMultiList.SlideSettingsPanel({"items": settings}),
 			"fileReferencePrefix": "./slide$",
@@ -44,10 +46,11 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 			"rotateParameter": ":fakeImageRotate",//start this property with : so it will not be stored.
 			"hideMainToolbar": false,
 			"allowReference": true,
-			"bodyCssClass" : config.hideImage? "hide-carousel-image" : config.bodyCssClass,
+			"bodyCssClass": config.hideImage ? "hide-carousel-image" : config.bodyCssClass,
 			"allowUpload": false,
 			"useFlash": true,
-			"maxSlides": maxSlides
+			"maxSlides": maxSlides,
+			"itemResourceType": "foundation/components/image"
 		};
 
 		//apply our defaults.
@@ -63,7 +66,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	/**
 	 * Init function for this carousel builder
 	 */
-	initComponent: function() {
+	initComponent: function () {
 		//call our superclass initComponent method.
 		AEM.Toolbox.Widgets.StructuredMultiList.superclass.initComponent.call(this);
 	},
@@ -71,7 +74,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	/**
 	 * Override CQ.form.Slideshow createHiddenInterfaceFields
 	 */
-	createHiddenInterfaceFields: function() {
+	createHiddenInterfaceFields: function () {
 		//call slideshow superclass method.
 		CQ.form.Slideshow.superclass.createHiddenInterfaceFields.call(this);
 	},
@@ -80,7 +83,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * Override CQ.form.SmartImage toolClicked
 	 * Will add some tracking code when the user clicks a tool.
 	 */
-	toolClicked: function(tool) {
+	toolClicked: function (tool) {
 		//if our tool is our crop tool then track the click
 		if (tool instanceof CQ.form.ImageCrop) {
 			this.cropActionPerformed = true;
@@ -100,7 +103,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * Override CQ.form.SmartImage commandToolClicked
 	 * Will add some tracking code when the user clicks a tool.
 	 */
-	commandToolClicked: function(tool) {
+	commandToolClicked: function (tool) {
 		//if our tool is our rotate tool then track the click
 		if (tool instanceof CQ.form.SmartImage.Tool.Rotate) {
 			this.rotateActionPerformed = true;
@@ -115,7 +118,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * Will clear values from our tool and track the user click
 	 * so we know what value to store to the jcr.
 	 */
-	handleDrop: function(dragData) {
+	handleDrop: function (dragData) {
 		//loop through our tools and reset them.
 		var toolCnt = this.imageToolDefs.length;
 		for (var toolIndex = 0; toolIndex < toolCnt; toolIndex++) {
@@ -144,7 +147,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * Will create our processed image configuration for displaying
 	 * the cropped or rotated image in our view.
 	 */
-	createProcessedImageConfig: function(path) {
+	createProcessedImageConfig: function (path) {
 		//if we don't have a currently edited slide then return null
 		if (!this.editedSlide) {
 			return null;
@@ -176,11 +179,11 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 		};
 	},
 
-    /**
+	/**
 	 * Override CQ.form.Slideshow onBeforeSubmit method.
 	 * Will handle some extra processing before submitting the dialog.
 	 */
-	onBeforeSubmit: function() {
+	onBeforeSubmit: function () {
 		//save our changes
 		this.saveChanges();
 
@@ -195,7 +198,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 			this.buildComboBoxContent();
 
 			CQ.Ext.Msg.show({
-				title:CQ.I18n.getMessage('Validation Failed'),
+				title: CQ.I18n.getMessage('Validation Failed'),
 				msg: CQ.I18n.getMessage('Verify the values of the marked fields.'),
 				buttons: CQ.Ext.Msg.OK,
 				icon: CQ.Ext.Msg.ERROR
@@ -233,7 +236,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * Will add a new slide to the ui.  This will make sure we haven't
 	 * exceeded the maximum number of slides.
 	 */
-	addNewSlide: function() {
+	addNewSlide: function () {
 		//if we hit our max slides count then just return
 		if (this.getSlideCount() >= this.maxSlides) {
 			return;
@@ -256,7 +259,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * Will remove a slide from our ui.  If no slides exist, a new empty
 	 * slide will be created.
 	 */
-	removeSlide: function() {
+	removeSlide: function () {
 		//only continue if we have a currently edited slide.
 		if (this.editedSlide) {
 			//set our slide to deleted
@@ -282,7 +285,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * Will create a new slide and prepopulate with data provided.  If no
 	 * data was provided then an empty slide is created.
 	 */
-	createSlide: function(data, slideIndex, basePath) {
+	createSlide: function (data, slideIndex, basePath) {
 		//get our slide values from the data provided.
 		var slideValues = {};
 
@@ -307,7 +310,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 		//if data was provided then create a slide prepopulated.
 		if (data) {
 			var slideIndexNum = parseInt(slideIndex);
-			if(slideIndexNum == NaN){
+			if (slideIndexNum == NaN) {
 				slideIndexNum = slideIndex;
 			}
 			var slideConfig = {
@@ -325,8 +328,9 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 				"maxheight": this.maxheight,
 				"hardwidth": this.hardwidth,
 				"hardheight": this.hardheight,
-				"defaultSlideName" : this.defaultSlideName,
-				"hideImage": this.hideImage
+				"defaultSlideName": this.defaultSlideName,
+				"hideImage": this.hideImage,
+				"itemResourceType": this.itemResourceType
 			};
 
 			//populate our custom settings
@@ -368,7 +372,8 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 				"maxheight": this.maxheight,
 				"hardwidth": this.hardwidth,
 				"hardheight": this.hardheight,
-				"defaultSlideName" : this.defaultSlideName
+				"defaultSlideName": this.defaultSlideName,
+				"itemResourceType": this.itemResourceType
 			};
 
 			//populate our custom settings
@@ -391,7 +396,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * This will also set if the slide is valid for checking before the
 	 * dialog is submitted.
 	 */
-	saveChanges: function() {
+	saveChanges: function () {
 		//only continue if we have a currently edited slide.
 		if (this.editedSlide) {
 			//set our slide values from the slide settings panel.
@@ -459,7 +464,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * Override CQ.form.Slideshow buildComboBoxContent to fix bug.
 	 * Will build the combobox selections from our current slides.
 	 */
-	buildComboBoxContent: function() {
+	buildComboBoxContent: function () {
 		//initialize arrays to hold our combobox objects and our display text counts.
 		//each display text must be unique or we run into weird issues with the combobox.
 		var data = [];
@@ -514,7 +519,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * Override CQ.form.Slideshow showSlide
 	 * This will display the provided slide in the ui for editing.
 	 */
-	showSlide: function(slide) {
+	showSlide: function (slide) {
 		//clear our tool flags
 		this.cropActionPerformed = false;
 		this.rotateActionPerformed = false;
@@ -538,7 +543,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 			this.originalRefImage = new CQ.form.SmartImage.Image(this.referencedFileInfo);
 
 			//apply our load handler to populate our tools after the image is loaded.
-			this.originalRefImage.loadHandler = function() {
+			this.originalRefImage.loadHandler = function () {
 				var toolCnt = this.imageToolDefs.length;
 				for (var toolIndex = 0; toolIndex < toolCnt; toolIndex++) {
 					var tool = this.imageToolDefs[toolIndex];
@@ -664,7 +669,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * This will save the current slide before switching, load the new slide
 	 * into the ui, and rebuild the combobox values.
 	 */
-	onSlideChanged: function(slide) {
+	onSlideChanged: function (slide) {
 		//save the currently edited slide.
 		this.saveChanges();
 
@@ -685,7 +690,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	/**
 	 * This will move a slide up one level.
 	 */
-	onUpButton: function() {
+	onUpButton: function () {
 		//initialize our variables for holding the current slide and previous slide indexes
 		var currentSlideIndex = -1;
 		var prevSlideIndex = -1;
@@ -725,7 +730,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	/**
 	 * This will move a slide down one level.
 	 */
-	onDownButton: function() {
+	onDownButton: function () {
 		//initialize our variables for holding the current slide and previous slide indexes
 		var currentSlideIndex = -1;
 		var nextSlideIndex = -1;
@@ -765,7 +770,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	/**
 	 * Will get the first invalid slide found.
 	 */
-	getInvalidSlide: function() {
+	getInvalidSlide: function () {
 		//loop through each slide and look for one that isn't deleted and
 		//is also invalid.
 		var slideCnt = this.slides.length;
@@ -786,7 +791,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * If a slide after the slide passed doesn't exist, then the slide before
 	 * will be returned.  If no slide is found, then null will be returned.
 	 */
-	getSurroundingSlide: function(slide) {
+	getSurroundingSlide: function (slide) {
 		//initialize variable to hold our surrounding slide
 		var surroundingSlide = null;
 
@@ -826,7 +831,7 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 	 * Will get the number of slides that are valid
 	 * and will be saved.
 	 */
-	getSlideCount: function() {
+	getSlideCount: function () {
 		var validSlideCount = 0;
 
 		//loop through each slide and count the number that have not been deleted.

@@ -75,6 +75,7 @@ This widget allows content authors to enter collections of data within a single 
 * defaultSlideName:  Provides some default text for displaying in the header dropdown as new items are added to the collection.
 * settings:  A cq:WidgetCollection that allows you to configure widgets for any additional data you need collected for each item.
 * useForDisplay:  Can be added to any widget in the settings area to indicate that the value added to this widget should be used in the header dropdown.
+* itemResourceType:  The sling:resourceType to assign to this slide when it is stored to the jcr. (Defaults to foundation/components/image)
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
