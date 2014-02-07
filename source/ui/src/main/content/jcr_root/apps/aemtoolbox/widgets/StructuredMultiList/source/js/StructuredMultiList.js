@@ -845,8 +845,16 @@ AEM.Toolbox.Widgets.StructuredMultiList = CQ.Ext.extend(CQ.form.Slideshow, {
 
 		//return our valid slide count
 		return validSlideCount;
-	}
+	},
 
+	/**
+	 * Overwrite SmartFile validateValue so we can make sure the html5 validation is used.
+	 * @param value
+	 * @returns {*}
+	 */
+	validateValue: function (value) {
+		return CQ.html5.form.SmartFile.superclass.validateValue.call(this, value);
+	}
 });
 
 CQ.Ext.reg("structuredmultilist", AEM.Toolbox.Widgets.StructuredMultiList);
