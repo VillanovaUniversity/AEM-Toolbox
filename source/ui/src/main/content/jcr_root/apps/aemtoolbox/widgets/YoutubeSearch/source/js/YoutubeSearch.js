@@ -63,7 +63,7 @@ AEM.Toolbox.Widgets.YoutubeSearch = CQ.Ext.extend(CQ.Ext.form.TriggerField, {
             var dialogConfig = CQ.Util.applyDefaults(this.dialogCfg, {
                 ok: okHandler,
                 videoSearchField: this,
-                url: 'http://gdata.youtube.com/feeds/api/users/' + this.youtubeUser +'/uploads?v=2&alt=jsonc',
+                url: 'https://gdata.youtube.com/feeds/api/users/' + this.youtubeUser +'/uploads?v=2&alt=jsonc',
                 "buttons": CQ.Dialog.OKCANCEL
             });
 
