@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import com.day.cq.commons.ImageResource;
 import com.day.cq.wcm.commons.AbstractImageServlet;
 import com.day.cq.wcm.foundation.Image;
 import com.day.image.Layer;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.scr.annotations.Activate;
@@ -27,6 +29,8 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceUtil;
 import org.osgi.service.component.ComponentContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SlingServlet(resourceTypes = {"sling/servlet/default"}, selectors = {"no.size.img", "size.img"})
 @Properties(value = {
@@ -35,14 +39,16 @@ import org.osgi.service.component.ComponentContext;
         @org.apache.felix.scr.annotations.Property(name = ImageServlet.JPEG_COMPRESSION, value = "1.0", propertyPrivate = false)
 })
 public class ImageServlet extends AbstractImageServlet {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public static final String PAGE_404_PROP_NAME = "default.page.404";
     public static final String VALID_DEVICES = "valid.devices";
     public static final String SKIP_RESIZING_SELECTOR = "no";
+    public static final String JPEG_COMPRESSION = "jpeg.compression";
     private static final Set<String> SELECTORS = new HashSet<String>() {{
         add("no.size.img");
         add("size.img");
     }};
-    public static final String JPEG_COMPRESSION = "jpeg.compression";
     private static final String DEFAULT_MIME_TYPE = "image/jpg";
 
     private String pageNotFound;
@@ -50,7 +56,7 @@ public class ImageServlet extends AbstractImageServlet {
     private Map<String,String> deviceSizes = new HashMap<String,String>();
     private double jpegCompressionValue = 1.0;
 
-	@SuppressWarnings("UnusedDeclaration")
+    @Activate
     protected void activate(ComponentContext context) {
         this.pageNotFound = (String) context.getProperties().get(PAGE_404_PROP_NAME);
         this.jpegCompressionValue = Double.parseDouble( (String) context.getProperties().get(JPEG_COMPRESSION) );
@@ -133,6 +139,7 @@ public class ImageServlet extends AbstractImageServlet {
 
         //get whether or not we should apply sizing restrictions
         boolean applySizing = !SKIP_RESIZING_SELECTOR.equals(selectors[0]);
+        logger.info("selecors[0]: " + selectors[0]);
 
         //get our property names holding the resizing configuration
         String propertyPrefix = selectors[selectors.length - 1];
@@ -208,7 +215,7 @@ public class ImageServlet extends AbstractImageServlet {
                                 int cropSize = (resizedLayer.getHeight() - height) / 2;
 
                                 //crop our image
-                                resizedLayer.crop(new Rectangle2D.Double(0, cropSize, resizedLayer.getWidth(), resizedLayer.getHeight() - (cropSize * 2)));
+                                resizedLayer.crop(new Rectangle2D.Double(0, cropSize, width, height));
                             } else {
                                 //else lets size on height and crop by width
                                 resizedLayer = ImageHelper.resize(layer, new Dimension(0, height), new Dimension(0, 0), new Dimension(0, 0));
@@ -222,7 +229,7 @@ public class ImageServlet extends AbstractImageServlet {
                                 int cropSize = (resizedLayer.getWidth() - width) / 2;
 
                                 //crop our image
-                                resizedLayer.crop(new Rectangle2D.Double(cropSize, 0, resizedLayer.getWidth() - (cropSize * 2), resizedLayer.getHeight()));
+                                resizedLayer.crop(new Rectangle2D.Double(cropSize, 0, width, height));
                             }
                         }
                     } else {
@@ -245,6 +252,7 @@ public class ImageServlet extends AbstractImageServlet {
 
             // apply diff if needed (because we create the layer inline)
             modified |= applyDiff(layer, c);
+            logger.debug("modified: " + modified);
         }
 
         if (modified) {
